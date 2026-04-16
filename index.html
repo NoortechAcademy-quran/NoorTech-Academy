@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NoorTech Academy</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #1f2937;
+      background: transparent;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -3;
+    }
+
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 25, 15, 0.55);
+      z-index: -2;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+      transition: 0.3s;
+    }
+
+    .header-scrolled {
+      background: rgba(255, 255, 255, 0.82);
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: #047857;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .logo h1 {
+      font-size: 20px;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .logo p {
+      font-size: 12px;
+      color: #d1fae5;
+      transition: 0.3s;
+    }
+
+    .header-scrolled .logo h1 {
+      color: #064e3b;
+    }
+
+    .header-scrolled .logo p {
+      color: #6b7280;
+    }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    nav a:hover {
+      color: #facc15;
+    }
+
+    .header-scrolled nav a {
+      color: #1f2937;
+    }
+
+    .header-scrolled nav a:hover {
+      color: #047857;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 22px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn-primary {
+      background: #047857;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #065f46;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(4px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.22);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+      padding: 90px 0 70px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 10px 16px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      color: white;
+      font-size: 14px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .hero h2 {
+      margin-top: 20px;
+      font-size: 56px;
+      line-height: 1.1;
+      color: white;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+    }
+
+    .hero h2 span {
+      display: block;
+      color: #facc15;
+    }
+
+    .hero p {
+      margin-top: 20px;
+      font-size: 18px;
+      line-height: 1.8;
+      color: #ecfdf5;
+      max-width: 600px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    }
+
+    .hero-buttons {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .stats {
+      margin-top: 35px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 500px;
+    }
+
+    .stat-card,
+    .card,
+    .meeting-card,
+    .feature-box,
+    .contact-box,
+    .price-card,
+    .hero-visual {
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+      backdrop-filter: blur(8px);
+    }
+
+    .stat-card {
+      padding: 18px;
+    }
+
+    .stat-card h3 {
+      color: #047857;
+      font-size: 26px;
+    }
+
+    .stat-card p {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .hero-visual-wrap {
+      position: relative;
+    }
+
+    .hero-glow {
+      position: absolute;
+      inset: -15px;
+      border-radius: 36px;
+      background: linear-gradient(to top right, rgba(167,243,208,0.75), rgba(255,255,255,0.5), rgba(253,230,138,0.5));
+      filter: blur(25px);
+      opacity: 0.9;
+    }
+
+    .hero-visual {
+      position: relative;
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+
+    .hero-panel {
+      min-height: 420px;
+      border-radius: 28px;
+      padding: 32px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(to bottom right, #065f46, #10b981);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(255,255,255,0.25), transparent 35%);
+    }
+
+    html{
+  scroll-behavior: smooth;
+}
+
+    .hero-panel .small {
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #d1fae5;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-panel h3 {
+      margin-top: 15px;
+      font-size: 34px;
+      line-height: 1.3;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mini-box {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+      border-radius: 18px;
+      padding: 16px;
+      margin-top: 15px;
+    }
+
+    .mini-box p:first-child {
+      color: #d1fae5;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    section {
+      padding: 90px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-title {
+      text-align: center;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .section-title .top {
+      color: #facc15;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 14px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    }
+
+    .section-title h3 {
+      margin-top: 12px;
+      font-size: 40px;
+      color: white;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.55);
+    }
+
+    .section-title p {
+      margin-top: 14px;
+      color: #ecfdf5;
+      line-height: 1.8;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+
+    .courses-grid,
+    .pricing-grid {
+      margin-top: 40px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .courses-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .pricing-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .card,
+    .price-card {
+      padding: 24px;
+      transition: 0.3s;
+    }
+
+    .card:hover,
+    .price-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background: #d1fae5;
+      color: #065f46;
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-weight: bold;
+    }
+
+    .course-type {
+      color: #b45309;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .card h4,
+    .price-card h4 {
+      margin-top: 18px;
+      font-size: 28px;
+      color: #064e3b;
+    }
+
+    .card p,
+    .price-card p {
+      margin-top: 14px;
+      color: #4b5563;
+      line-height: 1.8;
+    }
+
+    .price-card {
+      position: relative;
+    }
+
+    .price-badge {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    .price {
+      margin-top: 16px;
+      font-size: 36px;
+      font-weight: bold;
+      color: #047857;
+    }
+
+    .price span {
+      font-size: 15px;
+      color: #6b7280;
+      font-weight: normal;
+    }
+
+    .price-features {
+      margin-top: 18px;
+      padding-left: 18px;
+      color: #4b5563;
+      line-height: 2;
+    }
+
+    .price-card .btn {
+      margin-top: 20px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .featured-plan {
+      background: linear-gradient(to bottom right, rgba(6,95,70,0.92), rgba(16,185,129,0.92));
+      color: white;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .featured-plan h4,
+    .featured-plan .price,
+    .featured-plan p,
+    .featured-plan .price-features,
+    .featured-plan .price span {
+      color: white;
+    }
+
+    .featured-plan .btn {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .featured-plan .btn:hover {
+      background: #d97706;
+    }
+
+    .vip-pack {
+      background: linear-gradient(to bottom right, rgba(4,120,87,0.96), rgba(6,95,70,0.96));
+      color: white;
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+
+    .vip-pack h4,
+    .vip-pack .price,
+    .vip-pack p,
+    .vip-pack .price-features,
+    .vip-pack .price span {
+      color: white;
+    }
+
+    .vip-pack .btn {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .vip-pack .btn:hover {
+      background: #d97706;
+    }
+
+    .meeting-section {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(3px);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .meeting-layout,
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .meeting-left h3,
+    .contact-head h3 {
+      margin-top: 10px;
+      font-size: 40px;
+      color: white;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.55);
+    }
+
+    .meeting-left p {
+      margin-top: 16px;
+      color: #ecfdf5;
+      line-height: 1.9;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    }
+
+    .contact-head p {
+      margin-top: 16px;
+      color: black;
+      line-height: 1.9;
+      text-shadow: none;
+    }
+
+    .meeting-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .meeting-card {
+      padding: 20px;
+      transition: 0.3s;
+    }
+
+    .meeting-card:hover {
+      box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+    }
+
+    .meeting-info {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .meeting-info h4 {
+      font-size: 20px;
+      color: #064e3b;
+    }
+
+    .meeting-info p {
+      color: #6b7280;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .meeting-time {
+      text-align: right;
+    }
+
+    .meeting-time strong {
+      color: #b45309;
+    }
+
+    .about-left {
+      background: linear-gradient(to bottom right, rgba(6,78,59,0.92), rgba(4,120,87,0.92));
+      color: white;
+      padding: 34px;
+      border-radius: 30px;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.10);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .about-left .top {
+      color: #a7f3d0;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 13px;
+    }
+
+    .about-left h3 {
+      color: white;
+      margin-top: 10px;
+      font-size: 40px;
+    }
+
+    .about-left p {
+      color: #d1fae5;
+      margin-top: 16px;
+      line-height: 1.9;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .feature-box {
+      padding: 24px;
+    }
+
+    .feature-box p {
+      font-size: 20px;
+      font-weight: bold;
+      color: #064e3b;
+    }
+
+    .contact-box {
+      padding: 35px;
+    }
+
+    .contact-form {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .contact-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #a7f3d0;
+      border-radius: 14px;
+      font-size: 15px;
+      outline: none;
+      background: rgba(255,255,255,0.92);
+      transition: 0.3s;
+    }
+
+    .contact-form textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16,185,129,0.15);
+    }
+
+    .error {
+      font-size: 13px;
+      color: #dc2626;
+      display: none;
+    }
+
+    .input-error {
+      border-color: #dc2626 !important;
+      box-shadow: 0 0 0 3px rgba(220,38,38,0.10) !important;
+    }
+
+    .submit-center {
+      grid-column: 1 / -1;
+      justify-self: center;
+      margin-top: 20px;
+      width: 260px;
+      text-align: center;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #047857;
+      color: white;
+      padding: 14px 18px;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: 0.35s;
+      z-index: 4000;
+      min-width: 280px;
+      max-width: 360px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast-icon {
+      font-size: 20px;
+    }
+
+    .toast-text {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(8px);
+      padding: 24px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: white;
+      font-size: 14px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1200px) {
+      .pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 992px) {
+      .hero,
+      .meeting-layout,
+      .about-layout,
+      .courses-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h2,
+      .section-title h3,
+      .meeting-left h3,
+      .about-left h3,
+      .contact-head h3 {
+        font-size: 36px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .pricing-grid,
+      .contact-form,
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        gap: 12px;
+      }
+
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero h2 {
+        font-size: 30px;
+      }
+
+      .full-width {
+        grid-column: auto;
+      }
+
+      .footer-content {
+        flex-direction: column;
+      }
+
+      .submit-center {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <video autoplay muted loop playsinline class="video-bg">
+    <source src="Qurran1.mp4.mp4" type="video/mp4">
+  </video>
+
+  <div class="video-overlay"></div>
+
+  <header id="mainHeader">
+    <div class="container navbar">
+      <div class="logo">
+        <div class="logo-icon">N</div>
+        <div>
+          <h1>NoorTech Academy</h1>
+          <p>Quran E-learning Platform</p>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#courses">Courses</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#meeting">Meeting</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="Inscription.html">Register</a>
+      </nav>
+
+      <a href="Inscription.html" class="btn btn-primary">Choose Your Program</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="home">
+      <div class="container hero">
+        <div class="reveal">
+          <div class="badge">Audio-Visual Quran Learning for Muslims in Europe</div>
+          <h2>
+            Learn the Quran
+            <span>With Guidance and Peace</span>
+          </h2>
+          <p>
+            NoorTech Academy offers a modern and simple learning experience with
+            audio lessons, video content, and live meetings between teachers and students.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="#courses" class="btn btn-primary">Start Learning</a>
+            <a href="#meeting" class="btn btn-secondary">View Meetings</a>
+          </div>
+
+          <div class="stats">
+            <div class="stat-card reveal">
+              <h3>3+</h3>
+              <p>Learning Paths</p>
+            </div>
+            <div class="stat-card reveal">
+              <h3>Live</h3>
+              <p>Teacher Meetings</p>
+            </div>
+            <div class="stat-card reveal">
+              <h3>Easy</h3>
+              <p>User Experience</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual-wrap reveal">
+          <div class="hero-glow"></div>
+          <div class="hero-visual">
+            <div class="hero-panel">
+              <div>
+                <p class="small">NoorTech Academy</p>
+                <h3>Spiritual learning in a modern digital space.</h3>
+              </div>
+
+              <div>
+                <div class="mini-box">
+                  <p>Featured Lesson</p>
+                  <strong>Introduction to Tajwid</strong>
+                </div>
+                <div class="mini-box">
+                  <p>Next Meeting</p>
+                  <strong>Wednesday - 19:00 with Ustadha Maryam</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="courses">
+      <div class="container">
+        <div class="section-title reveal">
+          <p class="top">Courses</p>
+          <h3>Learn through audio, video, and guided sessions</h3>
+          <p>
+            Our platform is designed to make Quran learning accessible, clear, and engaging.
+          </p>
+        </div>
+
+        <div class="courses-grid">
+          <div class="card reveal">
+            <div class="card-top">
+              <span class="tag">Beginner</span>
+              <span class="course-type">Audio & Video</span>
+            </div>
+            <h4>Quran Reading Basics</h4>
+            <p>Learn Arabic letters, pronunciation, and basic reading rules.</p>
+            <a href="#pricing" class="btn btn-primary">View Course</a>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-top">
+              <span class="tag">Intermediate</span>
+              <span class="course-type">Video Lessons</span>
+            </div>
+            <h4>Tajwid Essentials</h4>
+            <p>Understand the main tajwid rules with simple guided lessons.</p>
+            <a href="#pricing" class="btn btn-primary">View Course</a>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-top">
+              <span class="tag">All Levels</span>
+              <span class="course-type">Meetings</span>
+            </div>
+            <h4>Memorization Support</h4>
+            <p>Follow structured memorization sessions with teacher guidance.</p>
+            <a href="#pricing" class="btn btn-primary">View Course</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="container">
+        <div class="section-title reveal">
+          <p class="top">Pricing</p>
+          <h3>Choose the plan that fits your learning journey</h3>
+          <p>
+            NoorTech Academy offers 4 flexible plans for children and adults,
+            with quarterly payment and simple access to courses, meetings, and support.
+          </p>
+        </div>
+
+        <div class="pricing-grid">
+
+          <div class="price-card reveal">
+            <h4>Basic Plan</h4>
+            <div class="price">40€ <span>/ trimestre</span></div>
+            <p>A simple plan for students who want to start with the basics.</p>
+            <ul class="price-features">
+              <li>2 sessions / week</li>
+              <li>Basic Quran reading</li>
+              <li>Group classes</li>
+              <li>WhatsApp support</li>
+            </ul>
+            <button class="btn btn-primary choose-pack-btn"
+                    data-pack="Basic Plan"
+                    data-price="40€ / trimestre">
+              Choose Plan
+            </button>
+          </div>
+
+          <div class="price-card reveal">
+            <h4>Standard Plan</h4>
+            <div class="price">70€ <span>/ trimestre</span></div>
+            <p>Perfect for students who want regular lessons and guided support.</p>
+            <ul class="price-features">
+              <li>3 sessions / week</li>
+              <li>Tajwid basics</li>
+              <li>Small groups</li>
+              <li>Priority support</li>
+            </ul>
+            <button class="btn btn-primary choose-pack-btn"
+                    data-pack="Standard Plan"
+                    data-price="70€ / trimestre">
+              Choose Plan
+            </button>
+          </div>
+
+          <div class="price-card featured-plan reveal">
+            <div class="price-badge">Popular</div>
+            <h4>Premium Plan</h4>
+            <div class="price">100€ <span>/ trimestre</span></div>
+            <p>Ideal for students who want more sessions and better progress.</p>
+            <ul class="price-features">
+              <li>5 sessions / week</li>
+              <li>Advanced Tajwid</li>
+              <li>Personal follow-up</li>
+              <li>Priority meetings</li>
+            </ul>
+            <button class="btn choose-pack-btn"
+                    data-pack="Premium Plan"
+                    data-price="100€ / trimestre">
+              Choose Plan
+            </button>
+          </div>
+
+          <div class="price-card vip-pack reveal">
+            <div class="price-badge">VIP</div>
+            <h4>VIP Plan</h4>
+            <div class="price">150€ <span>/ trimestre</span></div>
+            <p>Best choice for intensive Quran learning with private support.</p>
+            <ul class="price-features">
+              <li>Daily sessions</li>
+              <li>Private teacher</li>
+              <li>Full Quran program</li>
+              <li>Premium student support</li>
+            </ul>
+            <button class="btn choose-pack-btn"
+                    data-pack="VIP Plan"
+                    data-price="150€ / trimestre">
+              Choose Plan
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="meeting" class="meeting-section">
+      <div class="container meeting-layout">
+        <div class="meeting-left reveal">
+          <p class="top" style="color:#facc15;font-weight:bold;text-transform:uppercase;">Live Meetings</p>
+          <h3>Direct interaction between teacher and student</h3>
+          <p>
+            Students can join scheduled online meetings to practice reading,
+            improve tajwid, and receive personalized support.
+          </p>
+          <button class="btn btn-primary" onclick="window.open('https://meet.google.com/', '_blank')" style="background:#f59e0b;">
+            Join a Meeting
+          </button>
+        </div>
+
+        <div class="meeting-cards">
+          <div class="meeting-card reveal">
+            <div class="meeting-info">
+              <div>
+                <h4>Reading Practice</h4>
+                <p>Ustadh Ahmed</p>
+              </div>
+              <div class="meeting-time">
+                <strong>Monday</strong>
+                <p>18:00</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="meeting-card reveal">
+            <div class="meeting-info">
+              <div>
+                <h4>Tajwid Session</h4>
+                <p>Ustadha Maryam</p>
+              </div>
+              <div class="meeting-time">
+                <strong>Wednesday</strong>
+                <p>19:00</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="meeting-card reveal">
+            <div class="meeting-info">
+              <div>
+                <h4>Memorization Review</h4>
+                <p>Ustadh Yassine</p>
+              </div>
+              <div class="meeting-time">
+                <strong>Saturday</strong>
+                <p>17:00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container about-layout">
+        <div class="about-left reveal">
+          <p class="top">About Us</p>
+          <h3>A calm and accessible Quran learning experience</h3>
+          <p>
+            This platform was designed to support Muslims in Europe through a simple
+            online environment where learning the Quran becomes easier, more flexible,
+            and more connected.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-box reveal"><p>Simple interface</p></div>
+          <div class="feature-box reveal"><p>Islamic visual identity</p></div>
+          <div class="feature-box reveal"><p>Audio and video support</p></div>
+          <div class="feature-box reveal"><p>Student-teacher meetings</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="contact-box reveal">
+          <div class="contact-head">
+            <p class="top" style="color:#047857;font-weight:bold;text-transform:uppercase;">Contact</p>
+            <h3>Get in touch with NoorTech Academy</h3>
+            <p>
+              Contact us to learn more about courses, meetings, and student support.
+            </p>
+          </div>
+
+          <form id="contactForm" class="contact-form" novalidate>
+            <div class="contact-group">
+              <input type="text" id="contactFirstName" placeholder="First Name">
+              <span class="error" id="contactFirstNameError">Please enter your first name.</span>
+            </div>
+
+            <div class="contact-group">
+              <input type="text" id="contactLastName" placeholder="Last Name">
+              <span class="error" id="contactLastNameError">Please enter your last name.</span>
+            </div>
+
+            <div class="contact-group">
+              <input type="email" id="contactEmail" placeholder="Your Email">
+              <span class="error" id="contactEmailError">Please enter a valid email address.</span>
+            </div>
+
+            <div class="contact-group">
+              <input type="tel" id="contactPhone" placeholder="Phone Number">
+              <span class="error" id="contactPhoneError">Please enter a valid phone number.</span>
+            </div>
+
+            <div class="contact-group full-width">
+              <textarea id="contactMessage" placeholder="Your Message"></textarea>
+              <span class="error" id="contactMessageError">Please enter your message.</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary submit-center">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <p>© 2026 NoorTech Academy. All rights reserved.</p>
+      <p>Designed for Quran learning with a modern Islamic identity.</p>
+    </div>
+  </footer>
+
+  <div id="contactToast" class="toast">
+    <div class="toast-icon">✅</div>
+    <div class="toast-text">
+      Message sent successfully. We will contact you soon.
+    </div>
+  </div>
+
+  <script>
+    const header = document.getElementById("mainHeader");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 50) {
+        header.classList.add("header-scrolled");
+      } else {
+        header.classList.remove("header-scrolled");
+      }
+    });
+
+    const reveals = document.querySelectorAll(".reveal");
+
+    function revealOnScroll() {
+      const windowHeight = window.innerHeight;
+      reveals.forEach((el) => {
+        const top = el.getBoundingClientRect().top;
+        if (top < windowHeight - 80) {
+          el.classList.add("active");
+        }
+      });
+    }
+
+    window.addEventListener("scroll", revealOnScroll);
+    window.addEventListener("load", revealOnScroll);
+
+    const contactForm = document.getElementById("contactForm");
+    const contactToast = document.getElementById("contactToast");
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function isValidPhone(phone) {
+      return /^[0-9+\s()-]{8,20}$/.test(phone);
+    }
+
+    function showError(inputId, errorId) {
+      document.getElementById(inputId).classList.add("input-error");
+      document.getElementById(errorId).style.display = "block";
+    }
+
+    function hideError(inputId, errorId) {
+      document.getElementById(inputId).classList.remove("input-error");
+      document.getElementById(errorId).style.display = "none";
+    }
+
+    function showToast() {
+      contactToast.classList.add("show");
+      setTimeout(() => {
+        contactToast.classList.remove("show");
+      }, 6400);
+    }
+
+    contactForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById("contactFirstName").value.trim();
+      const lastName = document.getElementById("contactLastName").value.trim();
+      const email = document.getElementById("contactEmail").value.trim();
+      const phone = document.getElementById("contactPhone").value.trim();
+      const message = document.getElementById("contactMessage").value.trim();
+
+      let isValid = true;
+
+      if (!firstName) {
+        showError("contactFirstName", "contactFirstNameError");
+        isValid = false;
+      } else {
+        hideError("contactFirstName", "contactFirstNameError");
+      }
+
+      if (!lastName) {
+        showError("contactLastName", "contactLastNameError");
+        isValid = false;
+      } else {
+        hideError("contactLastName", "contactLastNameError");
+      }
+
+      if (!email || !isValidEmail(email)) {
+        showError("contactEmail", "contactEmailError");
+        isValid = false;
+      } else {
+        hideError("contactEmail", "contactEmailError");
+      }
+
+      if (!phone || !isValidPhone(phone)) {
+        showError("contactPhone", "contactPhoneError");
+        isValid = false;
+      } else {
+        hideError("contactPhone", "contactPhoneError");
+      }
+
+      if (!message) {
+        showError("contactMessage", "contactMessageError");
+        isValid = false;
+      } else {
+        hideError("contactMessage", "contactMessageError");
+      }
+
+      if (!isValid) return;
+
+      showToast();
+      contactForm.reset();
+    });
+
+    const contactInputs = [
+      ["contactFirstName", "contactFirstNameError"],
+      ["contactLastName", "contactLastNameError"],
+      ["contactEmail", "contactEmailError"],
+      ["contactPhone", "contactPhoneError"],
+      ["contactMessage", "contactMessageError"]
+    ];
+
+    contactInputs.forEach(([inputId, errorId]) => {
+      const el = document.getElementById(inputId);
+      el.addEventListener("input", () => {
+        hideError(inputId, errorId);
+      });
+    });
+
+    const choosePackButtons = document.querySelectorAll(".choose-pack-btn");
+
+    choosePackButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selectedPack = button.getAttribute("data-pack");
+        const selectedPrice = button.getAttribute("data-price");
+
+        localStorage.setItem("selectedPack", selectedPack);
+        localStorage.setItem("selectedPrice", selectedPrice);
+
+        window.location.href = "Inscription.html";
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quran Reading Basics - NoorTech Academy</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      background:url("bg.jpg.jpg") no-repeat center center/cover;
+      position:relative;
+      overflow-x:hidden;
+      color:#1f2937;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.35),
+        rgba(0,50,30,0.55)
+      );
+      z-index:-2;
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,215,120,0.14), transparent 22%),
+        radial-gradient(circle at 85% 30%, rgba(255,215,120,0.08), transparent 18%);
+      z-index:-1;
+      pointer-events:none;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .page{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:260px 1fr;
+    }
+
+    .sidebar{
+      background:rgba(255,255,255,0.12);
+      backdrop-filter:blur(12px);
+      border-right:1px solid rgba(255,255,255,0.18);
+      padding:26px 18px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:30px;
+    }
+
+    .brand-icon{
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      background:#047857;
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      font-weight:bold;
+      box-shadow:0 8px 20px rgba(0,0,0,0.18);
+    }
+
+    .brand-text h1{
+      color:white;
+      font-size:22px;
+      line-height:1.1;
+    }
+
+    .brand-text p{
+      color:#d1fae5;
+      font-size:12px;
+      margin-top:4px;
+    }
+
+    .menu{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .menu a{
+      color:white;
+      font-weight:600;
+      padding:14px 16px;
+      border-radius:14px;
+      transition:0.3s;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .menu a:hover,
+    .menu a.active{
+      background:rgba(255,255,255,0.16);
+      color:#facc15;
+      transform:translateX(4px);
+    }
+
+    .menu-icon{
+      font-size:18px;
+      width:22px;
+      text-align:center;
+    }
+
+    .sidebar-footer{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .mini-note{
+      color:#e5e7eb;
+      font-size:13px;
+      line-height:1.7;
+      padding:14px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .logout-btn{
+      border:none;
+      cursor:pointer;
+      padding:14px 16px;
+      border-radius:14px;
+      font-weight:bold;
+      background:#dc2626;
+      color:white;
+      transition:0.3s;
+    }
+
+    .logout-btn:hover{
+      background:#b91c1c;
+      transform:translateY(-2px);
+    }
+
+    .content{
+      padding:30px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:24px;
+    }
+
+    .welcome-box{
+      background:rgba(255,255,255,0.14);
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,0.18);
+      border-radius:24px;
+      padding:24px;
+      color:white;
+      box-shadow:0 12px 30px rgba(0,0,0,0.10);
+      flex:1;
+      min-width:280px;
+    }
+
+    .welcome-box p{
+      color:#d1fae5;
+      font-size:14px;
+      text-transform:uppercase;
+      letter-spacing:2px;
+    }
+
+    .welcome-box h2{
+      margin-top:10px;
+      font-size:34px;
+      line-height:1.2;
+    }
+
+    .welcome-box span{
+      color:#facc15;
+    }
+
+    .quick-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .quick-btn{
+      padding:12px 18px;
+      border-radius:14px;
+      font-weight:bold;
+      border:none;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .quick-btn.primary{
+      background:#047857;
+      color:white;
+    }
+
+    .quick-btn.primary:hover{
+      background:#065f46;
+    }
+
+    .quick-btn.secondary{
+      background:rgba(255,255,255,0.14);
+      color:white;
+      border:1px solid rgba(255,255,255,0.18);
+      backdrop-filter:blur(8px);
+    }
+
+    .quick-btn.secondary:hover{
+      background:rgba(255,255,255,0.22);
+    }
+
+    .course-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:24px;
+    }
+
+    .left-column,
+    .right-column{
+      display:flex;
+      flex-direction:column;
+      gap:24px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.92);
+      border:1px solid rgba(255,255,255,0.35);
+      border-radius:24px;
+      padding:24px;
+      box-shadow:0 12px 30px rgba(0,0,0,0.10);
+      backdrop-filter:blur(10px);
+    }
+
+    .card-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .card-title h3{
+      color:#064e3b;
+      font-size:24px;
+    }
+
+    .card-title span{
+      color:#6b7280;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .video-box{
+      border-radius:20px;
+      overflow:hidden;
+      background:#000;
+      box-shadow:0 10px 24px rgba(0,0,0,0.12);
+    }
+
+    .video-box video{
+      width:100%;
+      display:block;
+      max-height:430px;
+      object-fit:cover;
+    }
+
+    .lesson-desc{
+      margin-top:18px;
+      color:#4b5563;
+      line-height:1.8;
+      font-size:15px;
+    }
+
+    .action-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+
+    .btn{
+      display:inline-block;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:bold;
+      transition:0.3s;
+    }
+
+    .btn-primary{
+      background:#047857;
+      color:white;
+    }
+
+    .btn-primary:hover{
+      background:#065f46;
+    }
+
+    .btn-gold{
+      background:#f59e0b;
+      color:white;
+    }
+
+    .btn-gold:hover{
+      background:#d97706;
+    }
+
+    .btn-outline{
+      background:#ecfdf5;
+      color:#065f46;
+      border:1px solid #a7f3d0;
+    }
+
+    .btn-outline:hover{
+      background:#d1fae5;
+    }
+
+    .progress-row{
+      margin-bottom:16px;
+    }
+
+    .progress-top{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:8px;
+      font-size:14px;
+      color:#374151;
+      font-weight:600;
+    }
+
+    .progress-bar{
+      width:100%;
+      height:10px;
+      border-radius:999px;
+      background:#e5e7eb;
+      overflow:hidden;
+    }
+
+    .progress-fill{
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(to right, #10b981, #047857);
+    }
+
+    .lesson-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .lesson-item{
+      padding:14px;
+      border-radius:16px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .lesson-item strong{
+      color:#065f46;
+      display:block;
+      margin-bottom:4px;
+    }
+
+    .lesson-item p{
+      color:#6b7280;
+      font-size:14px;
+    }
+
+    .lesson-status{
+      background:#ecfdf5;
+      color:#065f46;
+      border:1px solid #a7f3d0;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+    }
+
+    .teacher-note{
+      background:#fefce8;
+      border:1px solid #fde68a;
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .teacher-note h4{
+      color:#b45309;
+      margin-bottom:8px;
+      font-size:18px;
+    }
+
+    .teacher-note p{
+      color:#6b7280;
+      line-height:1.8;
+      font-size:14px;
+    }
+
+    .resource-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .resource-item{
+      padding:14px;
+      border-radius:16px;
+      background:#f0fdf4;
+      border:1px solid #bbf7d0;
+    }
+
+    .resource-item strong{
+      color:#065f46;
+      display:block;
+      margin-bottom:6px;
+    }
+
+    .resource-item p{
+      color:#6b7280;
+      font-size:14px;
+      line-height:1.7;
+      margin-bottom:10px;
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(30px);
+      transition:opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.active{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    @media (max-width: 1100px){
+      .course-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 900px){
+      .page{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 600px){
+      .content{
+        padding:18px;
+      }
+
+      .topbar{
+        flex-direction:column;
+        align-items:stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+    <aside class="sidebar">
+      <div>
+        <div class="brand">
+          <div class="brand-icon">N</div>
+          <div class="brand-text">
+            <h1>NoorTech Academy</h1>
+            <p>Quran E-learning Platform</p>
+          </div>
+        </div>
+
+       <div class="menu">
+  <a href="dashboard.html"><span class="menu-icon">🏠</span> Dashboard</a>
+  <a href="my-courses.html" class="active"><span class="menu-icon">📚</span> My Courses</a>
+  <a href="https://meet.google.com" target="_blank"><span class="menu-icon">🎥</span> Meetings</a>
+  <a href="dashboard.html"><span class="menu-icon">📈</span> Progress</a>
+  <a href="dashboard.html"><span class="menu-icon">👤</span> Profile</a>
+</div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="mini-note">
+          Keep going. Every lesson brings you closer to better reading and understanding.
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="topbar reveal">
+        <div class="welcome-box">
+          <p>Course Page</p>
+          <h2>Quran Reading <span>Basics</span></h2>
+        </div>
+
+        <div class="quick-actions">
+          <a href="my-courses.html" class="quick-btn secondary">Back to Courses</a>
+          <a href="dashboard.html" class="quick-btn primary">Dashboard</a>
+        </div>
+      </div>
+
+      <div class="course-grid">
+        <div class="left-column">
+
+          <div class="card reveal">
+            <div class="card-title">
+              <h3>Lesson Video</h3>
+              <span>Lesson 1</span>
+            </div>
+
+            <div class="video-box">
+              <video controls>
+                <source src="Qurran3.mp4" type="video/mp4">
+              </video>
+            </div>
+
+            <p class="lesson-desc">
+              In this lesson, students start learning Arabic letters, correct pronunciation,
+              and the basics of reading Quranic text in a simple and guided way.
+            </p>
+
+            <div class="action-row">
+              <a href="#" class="btn btn-primary">Next Lesson</a>
+              <a href="#" class="btn btn-gold">Join Support Session</a>
+              <a href="#" class="btn btn-outline">Download PDF</a>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-title">
+              <h3>Course Progress</h3>
+              <span>Current status</span>
+            </div>
+
+            <div class="progress-row">
+              <div class="progress-top">
+                <span>Overall completion</span>
+                <span>70%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:70%;"></div>
+              </div>
+            </div>
+
+            <div class="progress-row">
+              <div class="progress-top">
+                <span>Reading practice</span>
+                <span>80%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:80%;"></div>
+              </div>
+            </div>
+
+            <div class="progress-row">
+              <div class="progress-top">
+                <span>Letter recognition</span>
+                <span>60%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:60%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-title">
+              <h3>Lesson List</h3>
+              <span>Course structure</span>
+            </div>
+
+            <div class="lesson-list">
+              <div class="lesson-item">
+                <div>
+                  <strong>Lesson 1: Arabic Letters</strong>
+                  <p>Introduction to the alphabet and pronunciation.</p>
+                </div>
+                <span class="lesson-status">Completed</span>
+              </div>
+
+              <div class="lesson-item">
+                <div>
+                  <strong>Lesson 2: Reading Short Words</strong>
+                  <p>Practice simple Quranic word reading.</p>
+                </div>
+                <span class="lesson-status">Current</span>
+              </div>
+
+              <div class="lesson-item">
+                <div>
+                  <strong>Lesson 3: Harakat Basics</strong>
+                  <p>Understanding vowels and sound changes.</p>
+                </div>
+                <span class="lesson-status">Locked</span>
+              </div>
+
+              <div class="lesson-item">
+                <div>
+                  <strong>Lesson 4: First Reading Exercise</strong>
+                  <p>Guided practice with simple ayat.</p>
+                </div>
+                <span class="lesson-status">Locked</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="right-column">
+
+          <div class="card reveal">
+            <div class="card-title">
+              <h3>Teacher Note</h3>
+              <span>Latest</span>
+            </div>
+
+            <div class="teacher-note">
+              <h4>Important Advice</h4>
+              <p>
+                Focus on correct pronunciation before speed. Repeat each letter
+                slowly and listen carefully to the recitation examples.
+              </p>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-title">
+              <h3>Course Resources</h3>
+              <span>Downloads</span>
+            </div>
+
+            <div class="resource-list">
+              <div class="resource-item">
+                <strong>PDF Lesson Notes</strong>
+                <p>Download the lesson summary and reading exercises.</p>
+                <a href="#" class="btn btn-outline">Download</a>
+              </div>
+
+              <div class="resource-item">
+                <strong>Pronunciation Sheet</strong>
+                <p>Quick guide for Arabic sounds and examples.</p>
+                <a href="#" class="btn btn-outline">Download</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-title">
+              <h3>Next Meeting</h3>
+              <span>Support class</span>
+            </div>
+
+            <div class="teacher-note" style="background:#f0fdf4;border-color:#bbf7d0;">
+              <h4 style="color:#065f46;">Reading Practice Session</h4>
+              <p>
+                Join the live support session to practice reading with your teacher.
+              </p>
+              <a href="https://meet.google.com" target="_blank" class="btn btn-primary" style="margin-top:12px;">Join Meeting</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const reveals = document.querySelectorAll(".reveal");
+
+    function revealOnScroll() {
+      const windowHeight = window.innerHeight;
+      reveals.forEach((el) => {
+        const top = el.getBoundingClientRect().top;
+        if (top < windowHeight - 80) {
+          el.classList.add("active");
+        }
+      });
+    }
+
+    window.addEventListener("scroll", revealOnScroll);
+    window.addEventListener("load", revealOnScroll);
+
+    function logout() {
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>

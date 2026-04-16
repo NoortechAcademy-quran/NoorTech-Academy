@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Dashboard - NoorTech Academy</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      background:url("bg2.jpg.jpg") no-repeat center center/cover;
+      position:relative;
+      overflow-x:hidden;
+      color:#1f2937;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.35),
+        rgba(0,50,30,0.55)
+      );
+      z-index:-2;
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,215,120,0.14), transparent 22%),
+        radial-gradient(circle at 85% 30%, rgba(255,215,120,0.08), transparent 18%);
+      z-index:-1;
+      pointer-events:none;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .page{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:260px 1fr;
+    }
+
+    .sidebar{
+      background:rgba(255,255,255,0.12);
+      backdrop-filter:blur(12px);
+      border-right:1px solid rgba(255,255,255,0.18);
+      padding:26px 18px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:30px;
+    }
+
+    .brand-icon{
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      background:#047857;
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      font-weight:bold;
+      box-shadow:0 8px 20px rgba(0,0,0,0.18);
+    }
+
+    .brand-text h1{
+      color:white;
+      font-size:22px;
+      line-height:1.1;
+    }
+
+    .brand-text p{
+      color:#d1fae5;
+      font-size:12px;
+      margin-top:4px;
+    }
+
+    .menu{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .menu a{
+      color:white;
+      font-weight:600;
+      padding:14px 16px;
+      border-radius:14px;
+      transition:0.3s;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .menu a:hover,
+    .menu a.active{
+      background:rgba(255,255,255,0.16);
+      color:#facc15;
+      transform:translateX(4px);
+    }
+
+    .menu-icon{
+      font-size:18px;
+      width:22px;
+      text-align:center;
+    }
+
+    .sidebar-footer{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .mini-note{
+      color:#e5e7eb;
+      font-size:13px;
+      line-height:1.7;
+      padding:14px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .logout-btn{
+      border:none;
+      cursor:pointer;
+      padding:14px 16px;
+      border-radius:14px;
+      font-weight:bold;
+      background:#dc2626;
+      color:white;
+      transition:0.3s;
+    }
+
+    .logout-btn:hover{
+      background:#b91c1c;
+      transform:translateY(-2px);
+    }
+
+    .content{
+      padding:30px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:24px;
+    }
+
+    .welcome-box{
+      background:rgba(255,255,255,0.14);
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,0.18);
+      border-radius:24px;
+      padding:24px;
+      color:white;
+      box-shadow:0 12px 30px rgba(0,0,0,0.10);
+      flex:1;
+      min-width:280px;
+    }
+
+    .welcome-box p{
+      color:#d1fae5;
+      font-size:14px;
+      text-transform:uppercase;
+      letter-spacing:2px;
+    }
+
+    .welcome-box h2{
+      margin-top:10px;
+      font-size:34px;
+      line-height:1.2;
+    }
+
+    .welcome-box span{
+      color:#facc15;
+    }
+
+    .quick-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .quick-btn{
+      padding:12px 18px;
+      border-radius:14px;
+      font-weight:bold;
+      border:none;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .quick-btn.primary{
+      background:#047857;
+      color:white;
+    }
+
+    .quick-btn.primary:hover{
+      background:#065f46;
+    }
+
+    .quick-btn.secondary{
+      background:rgba(255,255,255,0.14);
+      color:white;
+      border:1px solid rgba(255,255,255,0.18);
+      backdrop-filter:blur(8px);
+    }
+
+    .quick-btn.secondary:hover{
+      background:rgba(255,255,255,0.22);
+    }
+
+    .dashboard-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:24px;
+    }
+
+    .left-column,
+    .right-column{
+      display:flex;
+      flex-direction:column;
+      gap:24px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.92);
+      border:1px solid rgba(255,255,255,0.35);
+      border-radius:24px;
+      padding:24px;
+      box-shadow:0 12px 30px rgba(0,0,0,0.10);
+      backdrop-filter:blur(10px);
+    }
+
+    .card-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .card-title h3{
+      color:#064e3b;
+      font-size:24px;
+    }
+
+    .card-title span{
+      color:#6b7280;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:16px;
+    }
+
+    .stat-box{
+      background:#f0fdf4;
+      border:1px solid #bbf7d0;
+      border-radius:20px;
+      padding:18px;
+    }
+
+    .stat-box h4{
+      color:#047857;
+      font-size:28px;
+      margin-bottom:6px;
+    }
+
+    .stat-box p{
+      color:#6b7280;
+      font-size:14px;
+    }
+
+    .progress-row{
+      margin-bottom:16px;
+    }
+
+    .progress-row:last-child{
+      margin-bottom:0;
+    }
+
+    .progress-top{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:8px;
+      font-size:14px;
+      color:#374151;
+      font-weight:600;
+    }
+
+    .progress-bar{
+      width:100%;
+      height:10px;
+      border-radius:999px;
+      background:#e5e7eb;
+      overflow:hidden;
+    }
+
+    .progress-fill{
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(to right, #10b981, #047857);
+    }
+
+    .course-list{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .course-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      padding:16px;
+      border-radius:18px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      transition:0.3s;
+    }
+
+    .course-item:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 18px rgba(0,0,0,0.06);
+    }
+
+    .course-item h4{
+      color:#065f46;
+      margin-bottom:4px;
+      font-size:18px;
+    }
+
+    .course-item p{
+      color:#6b7280;
+      font-size:14px;
+    }
+
+    .course-btn{
+      background:#047857;
+      color:white;
+      padding:10px 16px;
+      border-radius:12px;
+      font-size:14px;
+      font-weight:bold;
+    }
+
+    .meeting-list{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .meeting-item{
+      padding:16px;
+      border-radius:18px;
+      background:#f0fdf4;
+      border:1px solid #bbf7d0;
+    }
+
+    .meeting-item h4{
+      color:#065f46;
+      margin-bottom:6px;
+      font-size:18px;
+    }
+
+    .meeting-item p{
+      color:#4b5563;
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .meeting-item .meeting-time{
+      color:#b45309;
+      font-weight:bold;
+      display:block;
+      margin-top:8px;
+    }
+
+    .join-btn{
+      display:inline-block;
+      margin-top:12px;
+      background:#f59e0b;
+      color:white;
+      padding:10px 16px;
+      border-radius:12px;
+      font-size:14px;
+      font-weight:bold;
+    }
+
+    .join-btn:hover{
+      background:#d97706;
+    }
+
+    .profile-card{
+      text-align:center;
+    }
+
+    .avatar{
+      width:90px;
+      height:90px;
+      border-radius:50%;
+      margin:0 auto 14px;
+      background:linear-gradient(to bottom right, #10b981, #047857);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:34px;
+      font-weight:bold;
+      box-shadow:0 10px 20px rgba(0,0,0,0.12);
+    }
+
+    .profile-card h4{
+      color:#064e3b;
+      font-size:22px;
+      margin-bottom:6px;
+    }
+
+    .profile-card p{
+      color:#6b7280;
+      font-size:14px;
+      margin-bottom:14px;
+    }
+
+    .profile-tags{
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .tag{
+      background:#ecfdf5;
+      color:#065f46;
+      border:1px solid #a7f3d0;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+    }
+
+    .edit-btn{
+      display:inline-block;
+      padding:10px 16px;
+      border-radius:12px;
+      background:#047857;
+      color:white;
+      font-size:14px;
+      font-weight:bold;
+      border:none;
+      cursor:pointer;
+    }
+
+    .edit-btn:hover{
+      background:#065f46;
+    }
+
+    .notif-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .notif-item{
+      padding:14px;
+      border-radius:16px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+    }
+
+    .notif-item strong{
+      color:#065f46;
+      display:block;
+      margin-bottom:6px;
+    }
+
+    .notif-item p{
+      color:#6b7280;
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .popup{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.65);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:0;
+      pointer-events:none;
+      transition:0.35s;
+      z-index:3000;
+      padding:20px;
+    }
+
+    .popup.active{
+      opacity:1;
+      pointer-events:all;
+    }
+
+    .popup-content{
+      width:100%;
+      max-width:420px;
+      background:white;
+      border-radius:24px;
+      padding:28px 24px;
+      box-shadow:0 20px 40px rgba(0,0,0,0.18);
+      animation:popupScale 0.35s ease;
+    }
+
+    .popup-content h3{
+      color:#047857;
+      margin-bottom:16px;
+      font-size:26px;
+      text-align:center;
+    }
+
+    .popup-form{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .popup-form input,
+    .popup-form select{
+      width:100%;
+      padding:14px 16px;
+      border:1px solid #a7f3d0;
+      border-radius:14px;
+      font-size:15px;
+      outline:none;
+      background:#fff;
+    }
+
+    .popup-form input:focus,
+    .popup-form select:focus{
+      border-color:#10b981;
+      box-shadow:0 0 0 3px rgba(16,185,129,0.15);
+    }
+
+    .popup-actions{
+      display:flex;
+      gap:12px;
+      margin-top:6px;
+    }
+
+    .popup-actions button{
+      flex:1;
+      padding:12px 16px;
+      border:none;
+      border-radius:14px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    .save-btn{
+      background:#047857;
+      color:white;
+    }
+
+    .cancel-btn{
+      background:#e5e7eb;
+      color:#1f2937;
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(30px);
+      transition:opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.active{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    @keyframes popupScale{
+      from{transform:scale(0.85);opacity:0;}
+      to{transform:scale(1);opacity:1;}
+    }
+
+    @media (max-width: 1100px){
+      .dashboard-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 900px){
+      .page{
+        grid-template-columns:1fr;
+      }
+
+      .stats-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 600px){
+      .content{
+        padding:18px;
+      }
+
+      .topbar{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .course-item{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .popup-actions{
+        flex-direction:column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+    <aside class="sidebar">
+      <div>
+        <div class="brand">
+          <div class="brand-icon">N</div>
+          <div class="brand-text">
+            <h1>NoorTech Academy</h1>
+            <p>Quran E-learning Platform</p>
+          </div>
+        </div>
+
+        <div class="menu">
+  <a href="dashboard.html" class="active"><span class="menu-icon">🏠</span> Dashboard</a>
+  <a href="my-courses.html"><span class="menu-icon">📚</span> My Courses</a>
+  <a href="https://meet.google.com" target="_blank"><span class="menu-icon">🎥</span> Meetings</a>
+  <a href="dashboard.html"><span class="menu-icon">📈</span> Progress</a>
+  <a href="dashboard.html"><span class="menu-icon">👤</span> Profile</a>
+</div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="mini-note">
+          Continue your Quran journey with lessons, progress tracking, and live sessions.
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="topbar reveal">
+        <div class="welcome-box">
+          <p>Student Dashboard</p>
+          <h2>Welcome, <span id="studentNameDisplay">Équipe NoorTech TSDI
+          </span> </h2>
+        </div>
+
+        <div class="quick-actions">
+          <a href="https://meet.google.com" target="_blank" class="quick-btn primary">Join Meeting</a>
+          <a href="index.html" class="quick-btn secondary">Back to Home</a>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="left-column">
+          <div class="card reveal">
+            <div class="card-title">
+              <h3>Quick Overview</h3>
+              <span>Today</span>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-box">
+                <h4>3</h4>
+                <p>Active Courses</p>
+              </div>
+
+              <div class="stat-box">
+                <h4>2</h4>
+                <p>Upcoming Meetings</p>
+              </div>
+
+              <div class="stat-box">
+                <h4>45%</h4>
+                <p>Total Progress</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-title">
+              <h3>My Progress</h3>
+              <span>Updated today</span>
+            </div>
+
+            <div class="progress-row">
+              <div class="progress-top">
+                <span>Quran Reading Basics</span>
+                <span>70%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:70%;"></div>
+              </div>
+            </div>
+
+            <div class="progress-row">
+              <div class="progress-top">
+                <span>Tajwid Essentials</span>
+                <span>45%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:45%;"></div>
+              </div>
+            </div>
+
+            <div class="progress-row">
+              <div class="progress-top">
+                <span>Memorization Support</span>
+                <span>20%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:20%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-title">
+              <h3>My Courses</h3>
+              <span>Continue learning</span>
+            </div>
+
+            <div class="course-list">
+              <div class="course-item">
+                <div>
+                  <h4>Quran Reading Basics</h4>
+                  <p>Learn Arabic letters and pronunciation.</p>
+                </div>
+                <a href="my-courses.html" class="course-btn">Open Course</a>
+              </div>
+
+              <div class="course-item">
+                <div>
+                  <h4>Tajwid Essentials</h4>
+                  <p>Improve recitation with simple tajwid rules.</p>
+                </div>
+                <a href="my-courses.html" class="course-btn">Open Course</a>
+              </div>
+
+              <div class="course-item">
+                <div>
+                  <h4>Memorization Support</h4>
+                  <p>Structured sessions for memorization progress.</p>
+                </div>
+                <a href="my-courses.html" class="course-btn">Open Course</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-column">
+          <div class="card profile-card reveal">
+            <div class="avatar" id="studentAvatar">M</div>
+            <h4 id="profileName">Équipe NoorTech TSDI</h4>
+            <p id="profileEmail">noortechacademy@example.com</p>
+
+            <div class="profile-tags">
+              <span class="tag" id="profileType">Adult</span>
+              <span class="tag" id="profileLevel">Beginner</span>
+              <span class="tag">Active</span>
+            </div>
+
+            <button class="edit-btn" onclick="openProfilePopup()">Edit Profile</button>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-title">
+              <h3>Upcoming Meetings</h3>
+              <span>This week</span>
+            </div>
+
+            <div class="meeting-list">
+              <div class="meeting-item">
+                <h4>Tajwid Session</h4>
+                <p>With Ustadha Maryam</p>
+                <span class="meeting-time">Wednesday - 19:00</span>
+                <a href="https://meet.google.com" target="_blank" class="join-btn">Join Meeting</a>
+              </div>
+
+              <div class="meeting-item">
+                <h4>Memorization Review</h4>
+                <p>With Ustadh Yassine</p>
+                <span class="meeting-time">Saturday - 17:00</span>
+                <a href="https://meet.google.com" target="_blank" class="join-btn">Join Meeting</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <div class="card-title">
+              <h3>Notifications</h3>
+              <span>Recent</span>
+            </div>
+
+            <div class="notif-list">
+              <div class="notif-item">
+                <strong>New Lesson Available</strong>
+                <p>Your Tajwid Essentials lesson has been updated.</p>
+              </div>
+
+              <div class="notif-item">
+                <strong>Meeting Reminder</strong>
+                <p>Your live session starts tomorrow at 19:00.</p>
+              </div>
+
+              <div class="notif-item">
+                <strong>Progress Update</strong>
+                <p>You completed 45% of your learning path.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="profilePopup" class="popup">
+    <div class="popup-content">
+      <h3>Edit Profile</h3>
+
+      <form class="popup-form" id="profileForm">
+        <input type="text" id="editName" placeholder="Full Name">
+        <input type="email" id="editEmail" placeholder="Email Address">
+        <select id="editType">
+          <option value="Child">Child</option>
+          <option value="Adult">Adult</option>
+        </select>
+        <select id="editLevel">
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+
+        <div class="popup-actions">
+          <button type="submit" class="save-btn">Save</button>
+          <button type="button" class="cancel-btn" onclick="closeProfilePopup()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const reveals = document.querySelectorAll(".reveal");
+
+    function revealOnScroll() {
+      const windowHeight = window.innerHeight;
+      reveals.forEach((el) => {
+        const top = el.getBoundingClientRect().top;
+        if (top < windowHeight - 80) {
+          el.classList.add("active");
+        }
+      });
+    }
+
+    window.addEventListener("scroll", revealOnScroll);
+    window.addEventListener("load", revealOnScroll);
+
+    function logout() {
+      window.location.href = "login.html";
+    }
+
+    const profilePopup = document.getElementById("profilePopup");
+    const profileForm = document.getElementById("profileForm");
+
+    function openProfilePopup() {
+      document.getElementById("editName").value = document.getElementById("profileName").textContent;
+      document.getElementById("editEmail").value = document.getElementById("profileEmail").textContent;
+      document.getElementById("editType").value = document.getElementById("profileType").textContent;
+      document.getElementById("editLevel").value = document.getElementById("profileLevel").textContent;
+      profilePopup.classList.add("active");
+    }
+
+    function closeProfilePopup() {
+      profilePopup.classList.remove("active");
+    }
+
+    profileForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("editName").value.trim();
+      const email = document.getElementById("editEmail").value.trim();
+      const type = document.getElementById("editType").value;
+      const level = document.getElementById("editLevel").value;
+
+      if (!name || !email) return;
+
+      document.getElementById("profileName").textContent = name;
+      document.getElementById("studentNameDisplay").textContent = name.split(" ")[0];
+      document.getElementById("profileEmail").textContent = email;
+      document.getElementById("profileType").textContent = type;
+      document.getElementById("profileLevel").textContent = level;
+      document.getElementById("studentAvatar").textContent = name.charAt(0).toUpperCase();
+
+      closeProfilePopup();
+    });
+  </script>
+
+</body>
+</html>
